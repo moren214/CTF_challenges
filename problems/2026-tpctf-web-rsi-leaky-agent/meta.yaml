@@ -1,0 +1,27 @@
+schema: 1
+id: 2026-tpctf-web-rsi-leaky-agent
+title: rsi-leaky-agent
+event: TPCTF
+year: 2026
+category: web
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-9525DC51
+summary: 星穹实验室的headless运维AI终端对外开放了API。
+tags:
+- prompt-injection
+- waf-bypass
+fingerprints:
+- 助手自称“星穹安全实验室内部运维助手”，职责是 runbook、性能指标、监控告警等
+- 模型没有可调用的工具，系统守则和机密都在上下文里
+attachments: []
+scripts: []
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: false
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 14 节；附件与脚本来自比赛工作目录

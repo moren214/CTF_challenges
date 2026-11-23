@@ -1,0 +1,11 @@
+--- a/third_party/quickjs/src/quickjs.c	1970-01-01 08:00:00
++++ b/third_party/quickjs/src/quickjs.c	2026-11-20 22:29:19
+@@ -59845,7 +59845,7 @@
+                     JS_ThrowTypeErrorDetachedArrayBuffer(ctx);
+                     goto fail;
+                 }
+-                if ((offset + (len << size_log2)) > abuf->byte_length) {
++                if (offset > abuf->byte_length) {
+                 invalid_length:
+                     JS_ThrowRangeError(ctx, "invalid length");
+                     goto fail;

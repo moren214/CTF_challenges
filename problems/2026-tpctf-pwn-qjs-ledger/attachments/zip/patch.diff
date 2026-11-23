@@ -1,0 +1,21 @@
+--- a/quickjs.c
++++ b/quickjs.c
+@@ -59845,10 +59845,15 @@
+                     JS_ThrowTypeErrorDetachedArrayBuffer(ctx);
+                     goto fail;
+                 }
+-                if ((offset + (len << size_log2)) > abuf->byte_length) {
++                /* Fold the element span once for the range check: the
++                   offset and the element count are both index-limited. */
++                {
++                    uint32_t byte_span = (uint32_t)(len << size_log2);
++                    if ((offset + byte_span) > abuf->byte_length) {
+                 invalid_length:
+-                    JS_ThrowRangeError(ctx, "invalid length");
+-                    goto fail;
++                        JS_ThrowRangeError(ctx, "invalid length");
++                        goto fail;
++                    }
+                 }
+             }
+             buffer = JS_DupValue(ctx, argv[0]);

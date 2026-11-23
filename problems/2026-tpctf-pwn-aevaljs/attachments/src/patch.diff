@@ -1,0 +1,54 @@
+--- /dev/fd/63	2026-11-21 15:56:27.872872021 +0800
++++ third_party/quickjs/src/quickjs.c	2026-11-21 15:13:22.744808800 +0800
+@@ -60057,11 +60057,16 @@
+     uint8_t *ptr;
+     uint32_t v;
+     uint64_t pos;
++    uint32_t vlen;
+ 
+     ta = JS_GetOpaque2(ctx, this_obj, JS_CLASS_DATAVIEW);
+     if (!ta)
+         return JS_EXCEPTION;
+     size = 1 << typed_array_size_log2(class_id);
++    /* Cache the view extent before the argument conversions below: they
++       can run user JS, but the view's own length does not depend on the
++       arguments, so hoisting it keeps the bounds check off the slow path. */
++    vlen = ta->length;
+     if (JS_ToIndex(ctx, &pos, argv[0]))
+         return JS_EXCEPTION;
+     littleEndian = argc > 1 && JS_ToBool(ctx, argv[1]);
+@@ -60070,7 +60075,7 @@
+     if (abuf->detached)
+         return JS_ThrowTypeErrorDetachedArrayBuffer(ctx);
+     // order matters: this check should come before the next one
+-    if ((pos + size) > ta->length)
++    if ((pos + size) > vlen)
+         return JS_ThrowRangeError(ctx, "out of bound");
+     // test262 expects a TypeError for this and V8, in its infinite wisdom,
+     // throws a "detached array buffer" exception, but IMO that doesn't make
+@@ -60171,11 +60176,16 @@
+     uint32_t v;
+     uint64_t pos;
+     JSValueConst val;
++    uint32_t vlen;
+ 
+     ta = JS_GetOpaque2(ctx, this_obj, JS_CLASS_DATAVIEW);
+     if (!ta)
+         return JS_EXCEPTION;
+     size = 1 << typed_array_size_log2(class_id);
++    /* Cache the view extent before the argument conversions below: they
++       can run user JS, but the view's own length does not depend on the
++       arguments, so hoisting it keeps the bounds check off the slow path. */
++    vlen = ta->length;
+     if (JS_ToIndex(ctx, &pos, argv[0]))
+         return JS_EXCEPTION;
+     val = argv[1];
+@@ -60212,7 +60222,7 @@
+     if (abuf->detached)
+         return JS_ThrowTypeErrorDetachedArrayBuffer(ctx);
+     // order matters: this check should come before the next one
+-    if ((pos + size) > ta->length)
++    if ((pos + size) > vlen)
+         return JS_ThrowRangeError(ctx, "out of bound");
+     // test262 expects a TypeError for this and V8, in its infinite wisdom,
+     // throws a "detached array buffer" exception, but IMO that doesn't make

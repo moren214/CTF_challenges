@@ -1,0 +1,38 @@
+--- a/third_party/quickjs/src/quickjs.c	1970-01-01 08:00:00
++++ b/third_party/quickjs/src/quickjs.c	2026-11-21 09:11:35
+@@ -59819,19 +59819,18 @@
+                 return JS_EXCEPTION;
+             if (JS_ToIndex(ctx, &offset, argv[1]))
+                 goto fail;
+-            if ((offset & ((1 << size_log2) - 1)) != 0)
+-                goto invalid_offset;
++            if ((offset & ((1 << size_log2) - 1)) != 0) {
++                JS_ThrowRangeError(ctx, "invalid offset");
++                goto fail;
++            }
+             abuf = p->u.array_buffer;
+             if (JS_IsUndefined(argv[2])) {
+                 if (abuf->detached) {
+                     JS_ThrowTypeErrorDetachedArrayBuffer(ctx);
+-                    goto fail;
+-                }
+-                if (offset > abuf->byte_length) {
+-                invalid_offset:
+-                    JS_ThrowRangeError(ctx, "invalid offset");
+                     goto fail;
+                 }
++                /* byteOffset is an Index in [0, 2^53); the view range is
++                   validated together with the length below. */
+                 track_rab = array_buffer_is_resizable(abuf);
+                 if (!track_rab) {
+                     if ((abuf->byte_length & ((1 << size_log2) - 1)) != 0)
+@@ -59845,7 +59844,8 @@
+                     JS_ThrowTypeErrorDetachedArrayBuffer(ctx);
+                     goto fail;
+                 }
+-                if ((offset + (len << size_log2)) > abuf->byte_length) {
++                /* The view length is bounded by the ArrayBuffer length. */
++                if ((len << size_log2) > abuf->byte_length) {
+                 invalid_length:
+                     JS_ThrowRangeError(ctx, "invalid length");
+                     goto fail;

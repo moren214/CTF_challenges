@@ -1,0 +1,48 @@
+# CTF 知识库配置。改这里不需要动脚本。
+schema: 1
+
+paths:
+  problems: problems
+  index: index/problems.jsonl
+  tags: tags.yaml
+  templates: templates
+  public_out: dist/public
+
+limits:
+  attachment_mb: 20          # 超过则只存 sha256 + 外链，不入库
+  public_attachment_mb: 5    # 公开库允许携带的附件上限
+  summary_max: 160           # summary 字符上限
+
+naming:
+  # 目录名即 id：<年份>-<赛事>-<分类>-<slug>
+  pattern: '^(?P<year>(?:19|20)\d{2})-(?P<event>[^-]+)-(?P<category>web|pwn|reverse|crypto|misc|blockchain|ai|hardware|other)-(?P<slug>[a-z0-9][a-z0-9-]*)$'
+
+tags:
+  strict: false              # true 时未知标签报错；false 只告警，便于渐进补词表
+
+public:
+  # 公开库生成时的兜底脱敏。私库本就不该出现明文 flag，这是第二道闸。
+  flag_patterns:
+    # 不加 \b：WP 里常见 b'...\r\nFLAG{...}' 这类转义串，前一个字符是 n，\b 会漏
+    # 花括号内至少 8 字符：放过 FLAG{...} 这种格式占位符，只抓真值
+    - '(?i)(flag|ctf|dh|nss|buu|hgame|n1ctf)\{[^}\n]{8,200}\}'
+  secret_patterns:
+    - pattern: '(?im)^(\s*PrivateKey\s*=\s*)\S+'
+      replace: '\1{{WG_PRIVATE_KEY}}'
+    - pattern: '(?im)^(\s*(?:PreSharedKey|PresharedKey)\s*=\s*)\S+'
+      replace: '\1{{WG_PSK}}'
+    # 平台实例的内部主机名与 VPN 端点（比赛结束后实例已销毁，但不必留痕）
+    - pattern: '(?i)\b[a-z0-9]{12,}\.internal\b'
+      replace: '{{INSTANCE_HOST}}'
+    - pattern: '(?i)\bnode\d+\.[a-z0-9.-]*ctfy\.run:\d+'
+      replace: '{{WG_ENDPOINT}}'
+  # 本机痕迹：公开版不该带出 /Users/<用户名> 这类绝对路径
+  path_patterns:
+    - pattern: '(?i)([A-Z]:[\\/]+Users[\\/]+)[^\\/\s"'')]+'
+      replace: '\1{{USER}}'
+  drop_meta_keys: [flag_sha256, private_notes]
+  drop_paths: [private, .ctf, .git, dist, __pycache__, .venv]
+  # 公开版不带的内容：平台实例元数据（内含内网主机名、节点 IP、team_id、VPN 端点）
+  exclude_globs:
+    - 'inbox/*/inst.json'
+    - 'inbox/*/instance*.json'

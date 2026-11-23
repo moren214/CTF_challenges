@@ -1,0 +1,34 @@
+schema: 1
+id: 2026-tpctf-pwn-qjs-ledger
+title: QJS Ledger — Pinned Expression Service
+event: TPCTF
+year: 2026
+category: pwn
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-0EC37D7F
+summary: QJS Ledger is the expression service behind an internal ledger tool.
+tags:
+- js-engine
+- sandbox-escape
+fingerprints:
+- 截断后 byte_span = 0x40 = 64
+- u.array.count = 0xE0000008
+attachments:
+- path: attachments/AUTHORED-0EC37D7F.zip
+  sha256: 1a45b7015a4b91779ac07310168c100d4ed26e48166abf035e32e0704d71da86
+  size: 1584529
+- path: attachments/zip/patch.diff
+  size: 894
+  sha256: 4edb2ff4fc9e193ccc21c3a230578b29e4a8f8382df311bf32b57c1dbff8c040
+scripts:
+- solve/remote.py
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: true
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 28 节；附件与脚本来自比赛工作目录

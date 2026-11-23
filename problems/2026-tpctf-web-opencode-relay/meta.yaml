@@ -1,0 +1,29 @@
+schema: 1
+id: 2026-tpctf-web-opencode-relay
+title: 'opencode-relay: Sealed Guardrail Context'
+event: TPCTF
+year: 2026
+category: web
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-74BF20A8
+summary: The RSIGN team front-ends its OpenCode v2.2.5 coding agent (model rsi/qwen35_9b) with an internal
+  HTTP gateway.
+tags:
+- prompt-injection
+fingerprints:
+- /api/config 把“密封文档”的大小和哈希都公布出来 —— 说明出题人预期你去拿原文，而不是猜；
+- 工作区里有 notes/noteB.md 与 notes/noteC.md 两份“评审材料”，题面又让 agent 做 review —— 典型的“让模型读文件再复述”的泄露面；
+- 只有一个 egress 过滤器，说明问题在过滤器本身，不在权限。
+attachments: []
+scripts:
+- solve/_wp_opencode_relay.md
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: false
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 15 节；附件与脚本来自比赛工作目录

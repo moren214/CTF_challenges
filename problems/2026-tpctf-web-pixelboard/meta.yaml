@@ -1,0 +1,50 @@
+schema: 1
+id: 2026-tpctf-web-pixelboard
+title: PixelBoard — 团队图片看板
+event: TPCTF
+year: 2026
+category: web
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-7D1024E9
+summary: PixelBoard 是一个轻量的团队图片看板，摄影组用它同步作品集和拍摄排期。
+tags:
+- php2shell
+- waf-bypass
+fingerprints:
+- 目标：取得平台下发到容器 /answers/flag 的 «FLAG»
+- 镜像：php:8.5.11-apache，Debian 13 trixie，Apache 2.4.69，mod_php。
+- '状态改变请求（POST/PUT/PATCH/DELETE）必须同时带 X-Panel: pixelboard 和正确的 X-Handshake。'
+attachments:
+- path: attachments/src/README.txt
+  size: 701
+  sha256: 6e138260bc0f5153b3d107a7e42343a9aa1ecee7d6412649f5fd8f2a84413b7e
+- path: attachments/src/README.md
+  size: 674
+  sha256: a2f6051cd515616ef513be3c74cdac00b9a5cd0b2905d4da879b4eed6df80385
+- path: attachments/src/gate.py
+  size: 5602
+  sha256: bc1ffad0a03112764b77511b1c85364a908dc266828aac503e7be076a7b2e2ab
+- path: attachments/src/index.html
+  size: 443
+  sha256: 8e3d7dcc1eb7a8495944e72f08a7cdf2a3271568e74ab46cbd3adaabeeab2e69
+- path: attachments/src/Dockerfile.txt
+  size: 518
+  sha256: 2dc61fb32854b146eecc36c63ba1e1e1f12ab0465ff2bc8bb3d2f848de83aecb
+- path: attachments/src/docker-compose.txt
+  size: 2307
+  sha256: e503fc85d0a10f986c43c71169d52695ac316095e3c1f617bdfcff38b172e3e8
+- path: attachments/src/entrypoint.sh.txt
+  size: 399
+  sha256: ca3149228bd804f9b4ed4e6cd82c7314e510cc793ad35992b7d43f945b87a4d2
+scripts:
+- solve/pb_exploit.py
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: true
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 13 节；附件与脚本来自比赛工作目录

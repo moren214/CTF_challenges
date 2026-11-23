@@ -1,0 +1,103 @@
+services:
+  flag-rotator:
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 64M
+    build:
+      context: ./services/flag-rotator
+    environment:
+      - ANSWER_FLAG
+    volumes:
+      - answers:/out
+    restart: "no"
+    healthcheck:
+      test: ["CMD", "sh", "-c", "test -s /out/flag"]
+      interval: 1s
+      timeout: 1s
+      retries: 30
+      start_period: 1s
+
+  secret-init:
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 32M
+    image: busybox
+    command: ["sh", "-c", "head -c 32 /dev/urandom | od -An -tx1 -v | tr -d ' \n' > /out/value"]
+    volumes:
+      - gate_secret:/out
+    restart: "no"
+    healthcheck:
+      test: ["CMD", "sh", "-c", "test -s /out/value"]
+      interval: 1s
+      timeout: 1s
+      retries: 30
+      start_period: 1s
+
+  gate:
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 512M
+    build:
+      context: ./services/gate
+    environment:
+      - UPSTREAM_HOST=app
+      - UPSTREAM_PORT=80
+    depends_on:
+      app:
+        condition: service_healthy
+      secret-init:
+        condition: service_completed_successfully
+    volumes:
+      - type: volume
+        source: gate_secret
+        target: /run/gate-secret
+        read_only: true
+    ports:
+      - "80:8080"
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request as u; assert u.urlopen('http://127.0.0.1:8080/', timeout=3).status == 200"]
+      interval: 5s
+      timeout: 4s
+      retries: 12
+      start_period: 5s
+
+  app:
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+    build:
+      context: ./services/app
+    volumes:
+      - type: volume
+        source: answers
+        target: /answers/flag
+        read_only: true
+        volume:
+          subpath: flag
+      - type: volume
+        source: gate_secret
+        target: /run/gate-secret
+        read_only: true
+    depends_on:
+      flag-rotator:
+        condition: service_completed_successfully
+      secret-init:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@fsockopen('127.0.0.1',80)?0:1);"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+
+volumes:
+  answers:
+  gate_secret:

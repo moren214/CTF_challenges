@@ -1,0 +1,12 @@
+# Equivalent local deployment of the DropVault instance.
+# Build context is the attachments root (this file's parent directory).
+services:
+  dropvault:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - ./secret.txt:/answers/flag:ro
+    restart: unless-stopped

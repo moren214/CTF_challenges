@@ -1,0 +1,58 @@
+schema: 1
+id: 2026-tpctf-web-extstore
+title: ExtStore 渲染管线 — 让请求管线替你执行
+event: TPCTF
+year: 2026
+category: web
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-FA956063
+summary: ExtStore 是一个主题商店的运维控制台：它只做两件事，把一个主题包排进渲染队列， 以及报告自己的健康状态。
+tags:
+- php2shell
+- path-traversal
+fingerprints:
+- session.upload_progress.enabled=On：multipart 上传会创建 session 进度数据；
+- 单 worker + MaxConnectionsPerChild=0：堆状态在请求间保持稳定，便于 groom；
+- session.save_path=/tmp 与 Alias /t/ /tmp/：命令把结果写进 /tmp 后可以直接通过 HTTP 读回。
+attachments:
+- path: attachments/AUTHORED-FA956063.zip
+  sha256: 94600003d1800e72a96884157a7be0572d7e6d28934d2c1af34a78da4eb9b268
+  size: 3046
+- path: attachments/zip/docker-compose.yml
+  size: 1195
+  sha256: b5a56efb251c1f1c7745ae15739e14b685b1fec7317efc7f8af39daf3da65600
+- path: attachments/zip/services/target/alias.conf
+  size: 87
+  sha256: 7b456acbee54945465ed8b1313fd8f6754c0b7ca0872837dd02524d26ae03405
+- path: attachments/zip/services/target/prefork.conf
+  size: 172
+  sha256: 73a393f4470fc902947a29af473528f96b444c6d933cfb367721a432db58825c
+- path: attachments/zip/services/target/php.ini
+  size: 279
+  sha256: c0443928b4649e91cfa779fcd5d2fef683e60234ac5609663e98e07c05d3a295
+- path: attachments/zip/services/target/app/console.php
+  size: 754
+  sha256: c2e4476e91b94c5b7824fb24037675c8a168878f4a1ca005b14878aa16da247e
+- path: attachments/zip/services/target/app/t.php
+  size: 17
+  sha256: db28e0750bdb4bf54f1458e8b5d9359db9963be65493b9cce66e0e16d57e67fd
+- path: attachments/zip/services/target/app/healthz.php
+  size: 17
+  sha256: db28e0750bdb4bf54f1458e8b5d9359db9963be65493b9cce66e0e16d57e67fd
+- path: attachments/zip/services/target/app/index.php
+  size: 754
+  sha256: c2e4476e91b94c5b7824fb24037675c8a168878f4a1ca005b14878aa16da247e
+- path: attachments/zip/services/target/app/assets/console.js
+  size: 178
+  sha256: 76e11f0e961aad3534910190189a2ba7d4cad94e790d53cf06d372667fcdf4fc
+scripts: []
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: true
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 12 节；附件与脚本来自比赛工作目录

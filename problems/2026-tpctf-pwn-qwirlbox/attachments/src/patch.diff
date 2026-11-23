@@ -1,0 +1,81 @@
+Fix a torn-view hazard in DataView get/set: the geometry snapshot is taken before the
+argument conversions, so a resizable ArrayBuffer shrunk inside an offset/value
+valueOf callback leaves the bounds checks validating a stale picture.
+
+--- a/third_party/quickjs/src/quickjs.c
++++ b/third_party/quickjs/src/quickjs.c
+@@ -60057,25 +60057,33 @@
+     uint8_t *ptr;
+     uint32_t v;
+     uint64_t pos;
++    uint32_t view_length, byte_length;
+ 
+     ta = JS_GetOpaque2(ctx, this_obj, JS_CLASS_DATAVIEW);
+     if (!ta)
+         return JS_EXCEPTION;
+     size = 1 << typed_array_size_log2(class_id);
++    /* Snapshot the view geometry up front.  The index conversion below can
++       run user JS (valueOf), and comparing fields read at different points
++       across such a callback would give a torn view of the buffer.  Read
++       ta->length and abuf->byte_length once, before any user code runs, so
++       the two bounds checks below always see one consistent picture. */
++    abuf = ta->buffer->u.array_buffer;
++    view_length = ta->length;
++    byte_length = abuf->byte_length;
+     if (JS_ToIndex(ctx, &pos, argv[0]))
+         return JS_EXCEPTION;
+     littleEndian = argc > 1 && JS_ToBool(ctx, argv[1]);
+     is_swap = littleEndian ^ !is_be();
+-    abuf = ta->buffer->u.array_buffer;
+     if (abuf->detached)
+         return JS_ThrowTypeErrorDetachedArrayBuffer(ctx);
+     // order matters: this check should come before the next one
+-    if ((pos + size) > ta->length)
++    if ((pos + size) > view_length)
+         return JS_ThrowRangeError(ctx, "out of bound");
+     // test262 expects a TypeError for this and V8, in its infinite wisdom,
+     // throws a "detached array buffer" exception, but IMO that doesn't make
+     // sense because the buffer is not in fact detached, it's still there
+-    if ((int64_t)ta->offset + ta->length > abuf->byte_length)
++    if ((int64_t)ta->offset + view_length > byte_length)
+         return JS_ThrowTypeError(ctx, "out of bound");
+     ptr = abuf->data + ta->offset + pos;
+ 
+@@ -60171,11 +60179,18 @@
+     uint32_t v;
+     uint64_t pos;
+     JSValueConst val;
++    uint32_t view_length, byte_length;
+ 
+     ta = JS_GetOpaque2(ctx, this_obj, JS_CLASS_DATAVIEW);
+     if (!ta)
+         return JS_EXCEPTION;
+     size = 1 << typed_array_size_log2(class_id);
++    /* Same geometry snapshot as js_dataview_getValue(): the index and value
++       conversions below can run user JS, so capture ta->length and
++       abuf->byte_length once, before any callback gets a chance to run. */
++    abuf = ta->buffer->u.array_buffer;
++    view_length = ta->length;
++    byte_length = abuf->byte_length;
+     if (JS_ToIndex(ctx, &pos, argv[0]))
+         return JS_EXCEPTION;
+     val = argv[1];
+@@ -60208,16 +60223,15 @@
+     }
+     littleEndian = argc > 2 && JS_ToBool(ctx, argv[2]);
+     is_swap = littleEndian ^ !is_be();
+-    abuf = ta->buffer->u.array_buffer;
+     if (abuf->detached)
+         return JS_ThrowTypeErrorDetachedArrayBuffer(ctx);
+     // order matters: this check should come before the next one
+-    if ((pos + size) > ta->length)
++    if ((pos + size) > view_length)
+         return JS_ThrowRangeError(ctx, "out of bound");
+     // test262 expects a TypeError for this and V8, in its infinite wisdom,
+     // throws a "detached array buffer" exception, but IMO that doesn't make
+     // sense because the buffer is not in fact detached, it's still there
+-    if ((int64_t)ta->offset + ta->length > abuf->byte_length)
++    if ((int64_t)ta->offset + view_length > byte_length)
+         return JS_ThrowTypeError(ctx, "out of bound");
+     ptr = abuf->data + ta->offset + pos;
+ 

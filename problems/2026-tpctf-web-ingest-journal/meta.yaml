@@ -1,0 +1,52 @@
+schema: 1
+id: 2026-tpctf-web-ingest-journal
+title: Ingest Journal
+event: TPCTF
+year: 2026
+category: web
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-554FE55A
+summary: A small journal service has stopped accepting imports after its worker began behaving strangely.
+tags:
+- php2shell
+- php-trick
+fingerprints:
+- 结论：应用层没有可达的读/执行点，真正的入口是 php2shell（PHP 8.5.11 + mod_php + prefork 单 worker 的堆破坏链）；recipe.ph
+- 单 worker + KeepAlive Off + 小堆（8M）+ session.upload_progress —— 让 heap grooming 变得“确定性”的标准配置
+- apache.conf 注释直接写 php2shell，等于把预期解法写在题面上。
+attachments:
+- path: attachments/AUTHORED-554FE55A.zip
+  sha256: 80f79c77fe1852a7471f2763af1c62b5dd05e5bff2b29468a6cf0aabf7a4160e
+  size: 2434
+- path: attachments/zip/service.Dockerfile
+  size: 347
+  sha256: f170990943ddba2f514b09a329e80fae733d334eef50071959fcf08a4f88a4cd
+- path: attachments/zip/README.txt
+  size: 174
+  sha256: b3e6721eabefa699470eb35150d439dce8bfd9c0bd9ffdb059672447eea54b0c
+- path: attachments/zip/index.html
+  size: 533
+  sha256: 22869caccc3ae65646bdbcd8acb5b11244d3354bbf19c5662cc390fbfd6f2b63
+- path: attachments/zip/recipe.php
+  size: 490
+  sha256: d9c3b55d6e39df50fad58d2cb70a1e210ada8c635f8614b4f10a084d4ac1d331
+- path: attachments/zip/configuration.txt
+  size: 147
+  sha256: c719a868488785b5065dbfbe2f218ef0ebf3bba01181f77939acacc900648b6c
+- path: attachments/zip/php.ini
+  size: 574
+  sha256: 9076ce32da1901b45ba5e4b24306f922012cccb6aeabec7695f7328cefdf2776
+- path: attachments/zip/apache.conf
+  size: 479
+  sha256: 67f7151c422662ab4ba96b61e7dcbc5e9ccc8a7242d99f993e154b3d3ac17bf9
+scripts: []
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: true
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 1 节；附件与脚本来自比赛工作目录

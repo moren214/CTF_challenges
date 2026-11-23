@@ -1,0 +1,36 @@
+schema: 1
+id: 2026-tpctf-web-lattice-press
+title: Lattice Press - statement preview workspace
+event: TPCTF
+year: 2026
+category: web
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-2A62275D
+summary: Lattice Press is the internal preview service the operations team uses to turn statement plans
+  into review frames.
+tags:
+- php-trick
+- file-upload
+fingerprints:
+- flag-rotator：把 $ANSWER_FLAG 写进 answers 卷的 /out/flag；
+- 附件：AUTHORED-2A62275D.zip、README.txt
+- 考点：php-trick、file-upload
+attachments:
+- path: attachments/AUTHORED-2A62275D.zip
+  sha256: d59759cc9d0ca5568f008ad77b563e8669a337e0b1373d677fdb342c96666105
+  size: 926
+- path: attachments/zip/README.txt
+  size: 1677
+  sha256: ad2990104aca17e8a6cff1a3f72c1f89691f9e226e94664db7392887a2c28883
+scripts:
+- solve/STATUS.md
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: true
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 6 节；附件与脚本来自比赛工作目录

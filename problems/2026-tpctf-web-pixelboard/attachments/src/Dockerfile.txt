@@ -1,0 +1,16 @@
+FROM php:8.5.11-apache
+
+COPY conf/zz-app.ini /usr/local/etc/php/conf.d/zz-app.ini
+COPY conf/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
+COPY conf/srv.conf /etc/apache2/conf-enabled/srv.conf
+
+COPY site/ /s/
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod 755 /usr/local/bin/entrypoint.sh
+
+RUN sed -ri 's#/var/www/html#/s#g' /etc/apache2/sites-available/*.conf \
+    && chown -R www-data:www-data /s \
+    && ln -sfn /answers/flag /flag
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+EXPOSE 80

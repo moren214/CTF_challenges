@@ -1,0 +1,29 @@
+schema: 1
+id: 2026-tpctf-web-payvault
+title: PayVault — Operator Console
+event: TPCTF
+year: 2026
+category: web
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-8D1C2328
+summary: 'PayVault runs its compensation reporting workspace with an embedded engineering assistant: a
+  full coding agent (OpenCode) that reads, writes and executes…'
+tags:
+- prompt-injection
+- path-traversal
+fingerprints:
+- 名称：PayVault — Operator Console
+- 目标：Recover the audit reference printed by the auditor payroll export.
+attachments: []
+scripts:
+- solve/solve.py
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: false
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 20 节；附件与脚本来自比赛工作目录

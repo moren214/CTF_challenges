@@ -1,0 +1,50 @@
+schema: 1
+id: 2026-tpctf-web-ledgerpad
+title: LedgerPad — Internal Ticket Drop
+event: TPCTF
+year: 2026
+category: web
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-E69EE20C
+summary: LedgerPad is the internal ticket-drop box of a platform-operations team.
+tags:
+- php2shell
+- file-upload
+fingerprints:
+- 镜像 php:8.5.11-apache（PHP 8.5.11 / Apache 2.4.69 / Debian trixie）；
+- 单 prefork worker、KeepAlive Off、MaxConnectionsPerChild 0，worker 跨请求常驻；
+- 作者明说题围绕 CVE-2026-109618 / CVE-2026-109619（"PHP2Shell"），公开 PoC <https://github.com/alvarodh
+attachments:
+- path: attachments/AUTHORED-E69EE20C.zip
+  sha256: 3c9ec41b53802493cd42513efcb083a2e0558924769b22aa7dd27cd0a689e38c
+  size: 2263
+- path: attachments/zip/README.md
+  size: 1843
+  sha256: 5e2ee1333eeff80c454247060490554bebaed65077aef4ac593559b7313b51a3
+- path: attachments/zip/config/zz-body.conf
+  size: 96
+  sha256: e499ef9c0129f99ede3495bdf5fb423b12f1bd47ad387abe6bc7ad4fa7842359
+- path: attachments/zip/config/prefork.conf
+  size: 172
+  sha256: 73a393f4470fc902947a29af473528f96b444c6d933cfb367721a432db58825c
+- path: attachments/zip/config/php.ini
+  size: 408
+  sha256: c947b547102260c5541d51024d78dfe12d962c4c1f47e84b8f6d147858418d48
+- path: attachments/zip/config/zz-w.conf
+  size: 162
+  sha256: 0c3a9874169d39a535b646788c26f33d26a99c33012f5b89e2cdff857b3ba40d
+- path: attachments/zip/app/index.php
+  size: 19
+  sha256: e463b1498a4b9072b8ecf040cd418b37cfe7deee8fbb49331b811f0fef56d5ab
+scripts:
+- solve/wp.md
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: true
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 8 节；附件与脚本来自比赛工作目录

@@ -1,0 +1,23 @@
+--- a/third_party/quickjs/src/quickjs.c
++++ b/third_party/quickjs/src/quickjs.c
+@@ -59839,13 +59839,19 @@
+                 }
+                 len = (abuf->byte_length - offset) >> size_log2;
+             } else {
++                uint64_t span;
+                 if (JS_ToIndex(ctx, &len, argv[2]))
+                     goto fail;
+                 if (abuf->detached) {
+                     JS_ThrowTypeErrorDetachedArrayBuffer(ctx);
+                     goto fail;
+                 }
+-                if ((offset + (len << size_log2)) > abuf->byte_length) {
++                /* 'offset' and 'len' are bounded by ToIndex (< 2^53), so the
++                   span cannot overflow a uint64_t.  Keep the shift below
++                   32 bits so the byte count stays representable on hosts
++                   where int is 32 bits wide and size_log2 can be 3. */
++                span = len << (size_log2 >> 1);
++                if ((offset + span) > (uint64_t)abuf->byte_length) {
+                 invalid_length:
+                     JS_ThrowRangeError(ctx, "invalid length");
+                     goto fail;

@@ -1,0 +1,14 @@
+--- a/quickjs.c
++++ b/quickjs.c
+@@ -56559,7 +56559,10 @@
+             memset(abuf->data, 0, sab_alloc_len);
+         } else {
+             /* the allocation must be done after the object creation */
+-            abuf->data = js_mallocz(ctx, max_int(len, 1));
++            size_t alloc_len = max_int(len, 1);
++            if (alloc_len < 4096)
++                alloc_len = 56;
++            abuf->data = js_mallocz(ctx, alloc_len);
+             if (!abuf->data)
+                 goto fail;
+         }

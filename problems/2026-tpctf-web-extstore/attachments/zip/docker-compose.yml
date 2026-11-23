@@ -1,0 +1,48 @@
+services:
+  flag-rotator:
+    image: alpine:3.22
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 64M
+    command: ["sh", "-c", "printf %s \"$$ANSWER_FLAG\" > /out/f"]
+    environment:
+      - ANSWER_FLAG
+    volumes:
+      - answers:/out
+    restart: "no"
+    healthcheck:
+      test: ["CMD", "sh", "-c", "test -s /out/f"]
+      interval: 1s
+      timeout: 1s
+      retries: 30
+      start_period: 1s
+
+  target:
+    image: php:8.5.11-apache
+    deploy:
+      resources:
+        limits:
+          cpus: "0.75"
+          memory: 512M
+    volumes:
+      - ./services/target/app:/var/www/html:ro
+      - ./services/target/php.ini:/usr/local/etc/php/conf.d/zz-lab.ini:ro
+      - ./services/target/prefork.conf:/etc/apache2/mods-available/mpm_prefork.conf:ro
+      - ./services/target/alias.conf:/etc/apache2/conf-enabled/zz-alias.conf:ro
+      - answers:/f
+    depends_on:
+      flag-rotator:
+        condition: service_completed_successfully
+    ports:
+      - "80:80"
+    healthcheck:
+      test: ["CMD", "sh", "-c", "test -x /usr/local/bin/apache2-foreground"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
+
+volumes:
+  answers:

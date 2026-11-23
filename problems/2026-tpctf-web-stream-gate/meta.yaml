@@ -1,0 +1,50 @@
+schema: 1
+id: 2026-tpctf-web-stream-gate
+title: Stream Gate
+event: TPCTF
+year: 2026
+category: web
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-B6873370
+summary: This import service accepts streamed submissions through its edge server.
+tags:
+- php2shell
+- php-trick
+fingerprints:
+- 类型：Web / PHP 8.5.11 + Apache prefork
+- A 请求：1001 个 1 字节字段触发 max_input_vars，再加 PHPSESSID=\x00、PHP_SESSION_UPLOAD_PROGRESS、64 字节文件、
+- B 请求：PHPSESSID=attacksessionid0001，加 841 个 48 字节字段，最后一个 79 字节的 forged field。
+attachments:
+- path: attachments/AUTHORED-B6873370.zip
+  sha256: c75eabf357865de06e1f9e83b636822b25205a5e2ff8107fc67b65d1c1433e68
+  size: 2023
+- path: attachments/zip/service.Dockerfile
+  size: 299
+  sha256: 92e13e10a80c47674947d0efb387d63be169868ab47aa75570310b49c55a616c
+- path: attachments/zip/README.txt
+  size: 171
+  sha256: 2540fea72373767ab47dd3017be9d99007fff78a237938bd965243f38ce181d4
+- path: attachments/zip/configuration.txt
+  size: 147
+  sha256: c719a868488785b5065dbfbe2f218ef0ebf3bba01181f77939acacc900648b6c
+- path: attachments/zip/php.ini
+  size: 535
+  sha256: 880bb8bbf575ac2f95a6ab19191efd11b4da3b9cccd61ae516c1da20c30d420e
+- path: attachments/zip/index.php
+  size: 531
+  sha256: d1ab9607de9cd8d2989096e3934223dcc2ac977c6d251a72c55474338e26a1cf
+- path: attachments/zip/apache.conf
+  size: 533
+  sha256: 045c145a4005d70102802781cace58c7ef2e6c4a7ce200027a57b43a9cdb9173
+scripts:
+- solve/php2shell_exploit.py
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: true
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 2 节；附件与脚本来自比赛工作目录

@@ -1,0 +1,35 @@
+schema: 1
+id: 2024-demo-web-sqli-login
+title: 登录框 SQL 注入（结构示例）
+event: demo
+year: 2024
+category: web
+difficulty: easy
+status: solved
+solved_at: '2024-05-01'
+summary: 登录框把用户名拼进 SQL 且只挡空格/union/select，用 /**/ 与大小写混写绕过后布尔盲注出密码。
+tags: [sql-injection, waf-bypass, burp]
+fingerprints:
+- 登录失败页面回显数据库报错，说明参数进了 SQL 语句
+- 过滤了空格、union、select，但注释符没挡
+- 真/假条件返回的页面长度不同，可做布尔盲注
+attachments:
+- path: attachments/app.py
+  sha256: f825efc7aacba064c48d600ea7ef3decc6d1bfc565a6be4dabd4996aa56c8ed5
+  size: 974
+  redistributable: true
+scripts:
+- solve/exp.py
+evidence:
+- 'solve/exp.py:24 用 substr(...) 逐字符判断，真值返回 200'
+- 'app.py:23 f-string 直接拼接 username'
+environment:
+- python 3.11 + flask + requests
+dead_ends:
+- 直接 union select 被 WAF 拦（关键字未混淆）
+- 时间盲注不可用（sqlite 没有 sleep）
+related: []
+flag_format: 'flag\{[a-z0-9_]+\}'
+sources:
+- type: self
+  note: 结构示例，非真实比赛题目

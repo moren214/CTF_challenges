@@ -1,0 +1,113 @@
+# 受控词表：题目 meta.yaml 的 tags 只能从这里取（strict=false 时未知标签只告警）。
+# techniques 带 category，用于反查时按大类收窄；tools 单列，避免技术/工具混在一起。
+version: 1
+
+categories:
+  web:       { zh: Web,       en: Web }
+  pwn:       { zh: Pwn,       en: Pwn }
+  reverse:   { zh: 逆向,      en: Reverse }
+  crypto:    { zh: 密码学,    en: Crypto }
+  misc:      { zh: 杂项,      en: Misc }
+  blockchain: { zh: 区块链,   en: Blockchain }
+  ai:        { zh: AI 安全,   en: AI }
+  hardware:  { zh: 硬件,      en: Hardware }
+  other:     { zh: 其他,      en: Other }
+
+techniques:
+  sql-injection:      { zh: SQL 注入,      en: SQL injection,     aliases: [sqli, sql注入, 注入], category: web }
+  nosql-injection:    { zh: NoSQL 注入,    en: NoSQL injection,   aliases: [mongodb注入], category: web }
+  xss:                { zh: 跨站脚本,      en: XSS,               aliases: [跨站, 反射型xss, 存储型xss], category: web }
+  ssrf:               { zh: 服务端请求伪造, en: SSRF,             aliases: [gopher, 内网探测], category: web }
+  ssti:               { zh: 模板注入,      en: SSTI,              aliases: [模板注入, jinja2, twig], category: web }
+  xxe:                { zh: XML 外部实体,  en: XXE,               aliases: [实体注入], category: web }
+  file-upload:        { zh: 文件上传,      en: File upload,       aliases: [上传绕过, 免杀图片马], category: web }
+  path-traversal:     { zh: 路径穿越,      en: Path traversal,    aliases: [目录穿越, '..%2f'], category: web }
+  deserialization:    { zh: 反序列化,      en: Deserialization,   aliases: [php反序列化, java反序列化, pickle], category: web }
+  jwt:                { zh: JWT 攻击,      en: JWT,               aliases: [jwt伪造, alg=none], category: web }
+  php-trick:          { zh: PHP 特性,      en: PHP tricks,        aliases: [弱类型, 伪协议, php://filter], category: web }
+  waf-bypass:         { zh: WAF 绕过,      en: WAF bypass,        aliases: [过滤绕过, 关键字绕过], category: web }
+  race-condition:     { zh: 条件竞争,      en: Race condition,    aliases: [并发, 竞争], category: web }
+  prototype-pollution: { zh: 原型链污染,   en: Prototype pollution, aliases: [proto污染], category: web }
+  csrf:               { zh: 跨站请求伪造,  en: CSRF,              aliases: [], category: web }
+  python-jail:        { zh: Python 沙箱逃逸, en: Pyjail,          aliases: [pyjail, 沙箱逃逸], category: misc }
+
+  stack-overflow:     { zh: 栈溢出,        en: Stack overflow,    aliases: [缓冲区溢出, bof], category: pwn }
+  ret2libc:           { zh: ret2libc,      en: ret2libc,          aliases: [泄露libc], category: pwn }
+  ret2text:           { zh: ret2text,      en: ret2text,          aliases: [返回代码段], category: pwn }
+  format-string:      { zh: 格式化字符串,  en: Format string,     aliases: [fmtstr, '%p'], category: pwn }
+  heap-uaf:           { zh: 堆 UAF,        en: Heap UAF,          aliases: [use after free, 堆利用], category: pwn }
+  tcache-poisoning:   { zh: tcache 投毒,   en: tcache poisoning,  aliases: [tcache, 堆风水], category: pwn }
+  rop:                { zh: ROP,           en: ROP,               aliases: [gadget, 返回导向], category: pwn }
+  srop:               { zh: SROP,          en: SROP,              aliases: [sigreturn], category: pwn }
+  off-by-one:         { zh: off-by-one,    en: off-by-one,        aliases: [单字节溢出], category: pwn }
+  sandbox-escape:     { zh: 沙箱逃逸,      en: Sandbox escape,    aliases: [seccomp, 逃逸], category: pwn }
+  kernel-pwn:         { zh: 内核 pwn,      en: Kernel pwn,        aliases: [提权, kernel], category: pwn }
+  js-engine:          { zh: JS 引擎漏洞,   en: JS engine bug,     aliases: [quickjs, v8, javascriptcore, 引擎逃逸], category: pwn }
+  php2shell:          { zh: PHP2Shell 堆利用, en: PHP2Shell,      aliases: [CVE-2026-109618, CVE-2026-109619, php2shell], category: pwn }
+
+  patch:              { zh: 补丁,          en: Patching,          aliases: [改跳转, nop], category: reverse }
+  unpacking:          { zh: 脱壳,          en: Unpacking,         aliases: [upx, 壳], category: reverse }
+  vm-obfuscation:     { zh: 虚拟机保护,    en: VM obfuscation,    aliases: [vm, 字节码], category: reverse }
+  anti-debug:         { zh: 反调试,        en: Anti-debug,        aliases: [ptrace, 反调试绕过], category: reverse }
+  go-reverse:         { zh: Go 逆向,       en: Go reverse,        aliases: [golang], category: reverse }
+  rust-reverse:       { zh: Rust 逆向,     en: Rust reverse,      aliases: [], category: reverse }
+  pyc-reverse:        { zh: Python 字节码, en: pyc reverse,       aliases: [pyc, 反编译], category: reverse }
+  android-reverse:    { zh: Android 逆向,  en: Android reverse,   aliases: [apk, jadx, frida], category: reverse }
+  wasm:               { zh: WASM 逆向,     en: WASM reverse,      aliases: [webassembly], category: reverse }
+
+  rsa-small-e:        { zh: RSA 小公钥,    en: RSA small e,       aliases: [e=3, 小明文], category: crypto }
+  rsa-common-modulus: { zh: RSA 共模,      en: RSA common modulus, aliases: [共模攻击], category: crypto }
+  rsa-wiener:         { zh: RSA Wiener,    en: RSA Wiener,        aliases: [小私钥], category: crypto }
+  coppersmith:        { zh: Coppersmith,   en: Coppersmith,       aliases: [小根, lattice], category: crypto }
+  lattice:            { zh: 格攻击,        en: Lattice,           aliases: [lll, fpylll], category: crypto }
+  aes-mode:           { zh: AES 模式,      en: AES mode,          aliases: [cbc翻转, ecb, ctr], category: crypto }
+  prng-predict:       { zh: PRNG 预测,     en: PRNG prediction,   aliases: [随机数预测, mt19937, lcg], category: crypto }
+  ecc-attack:         { zh: ECC 攻击,      en: ECC attack,        aliases: [椭圆曲线, 小群], category: crypto }
+  hash-collision:     { zh: 哈希碰撞,      en: Hash collision,    aliases: [长度扩展, md5], category: crypto }
+  padding-oracle:     { zh: 填充预言,      en: Padding oracle,    aliases: [cbc padding], category: crypto }
+
+  stego-lsb:          { zh: LSB 隐写,      en: LSB stego,         aliases: [最低位, 图片隐写], category: misc }
+  stego-audio:        { zh: 音频隐写,      en: Audio stego,       aliases: [频谱, wav], category: misc }
+  pcap-analysis:      { zh: 流量分析,      en: PCAP analysis,     aliases: [抓包, wireshark, tshark], category: misc }
+  zip-crack:          { zh: 压缩包破解,    en: Zip cracking,      aliases: [zip密码, 伪加密], category: misc }
+  osint:              { zh: 开源情报,      en: OSINT,             aliases: [社工, 地理定位], category: misc }
+  esolang:            { zh: 小众语言,      en: Esolang,           aliases: [brainfuck, malbolge], category: misc }
+  image-forensics:    { zh: 图片取证,      en: Image forensics,   aliases: [exif, 图片修复, 盲水印], category: misc }
+  memory-forensics:   { zh: 内存取证,      en: Memory forensics,  aliases: [volatility, 内存镜像], category: misc }
+  qr:                 { zh: 二维码,        en: QR code,           aliases: [qr, 扫码], category: misc }
+  encoding:           { zh: 编码转换,      en: Encoding,          aliases: [base64, 进制, 套娃], category: misc }
+
+  reentrancy:         { zh: 重入攻击,      en: Reentrancy,        aliases: [智能合约], category: blockchain }
+  integer-overflow:   { zh: 整数溢出,      en: Integer overflow,  aliases: [溢出], category: blockchain }
+  private-key-leak:   { zh: 私钥泄露,      en: Private key leak,  aliases: [助记词], category: blockchain }
+
+  prompt-injection:   { zh: 提示注入,      en: Prompt injection,  aliases: [越狱, jailbreak], category: ai }
+  adversarial-example: { zh: 对抗样本,     en: Adversarial example, aliases: [], category: ai }
+  model-extraction:   { zh: 模型窃取,      en: Model extraction,  aliases: [], category: ai }
+
+tools:
+  pwntools:      { zh: pwntools }
+  gdb:           { zh: gdb, aliases: [gef, pwndbg] }
+  ida:           { zh: IDA }
+  ghidra:        { zh: Ghidra }
+  radare2:       { zh: radare2, aliases: [r2] }
+  z3:            { zh: z3, aliases: [约束求解] }
+  sage:          { zh: SageMath, aliases: [sage] }
+  frida:         { zh: Frida }
+  jadx:          { zh: jadx }
+  apktool:       { zh: apktool }
+  wireshark:     { zh: Wireshark }
+  tshark:        { zh: tshark }
+  binwalk:       { zh: binwalk }
+  foremost:      { zh: foremost }
+  steghide:      { zh: steghide }
+  zsteg:         { zh: zsteg }
+  cyberchef:     { zh: CyberChef }
+  sqlmap:        { zh: sqlmap }
+  burp:          { zh: Burp Suite }
+  hashcat:       { zh: hashcat }
+  john:          { zh: John the Ripper }
+  volatility:    { zh: Volatility }
+  angr:          { zh: angr }
+  apache:        { zh: Apache HTTPD, aliases: [httpd, mpm] }
+  php:           { zh: PHP }

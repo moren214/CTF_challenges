@@ -1,0 +1,13 @@
+#!/bin/sh
+set -eu
+secret=""
+i=0
+while [ ! -s /run/gate-secret/value ] && [ "$i" -lt 60 ]; do
+  i=$((i+1))
+  sleep 1
+done
+[ -s /run/gate-secret/value ] || exit 1
+secret=$(cat /run/gate-secret/value)
+sed -i "s#Require all granted#Require env gate_ok#" /etc/apache2/conf-enabled/srv.conf
+printf 'SetEnvIf X-Gate "^%s$" gate_ok\n' "$secret" >> /etc/apache2/conf-enabled/srv.conf
+exec apache2-foreground

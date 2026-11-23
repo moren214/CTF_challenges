@@ -1,0 +1,29 @@
+--- a/third_party/quickjs/src/quickjs.c	1970-01-01 08:00:00
++++ b/third_party/quickjs/src/quickjs.c	2026-11-21 09:15:48
+@@ -58648,15 +58648,16 @@
+         elt_size = 1 << typed_array_size_log2(p->class_id);
+         if (!JS_IsUndefined(tsc.cmp)) {
+             uint32_t *array_idx;
+-            void *array;
++            void *array, *array_ptr;
+             size_t i, j;
+ 
+             /* the array must be copied because the comparison
+                function may modify it */
++            array_ptr = p->u.array.u.ptr;
+             array = js_malloc(ctx, len * elt_size);
+             if (!array)
+                 return JS_EXCEPTION;
+-            memcpy(array, p->u.array.u.ptr, len * elt_size);
++            memcpy(array, array_ptr, len * elt_size);
+             
+             /* array_idx is needed to have a stable sort */
+             array_idx = js_malloc(ctx, len * sizeof(array_idx[0]));
+@@ -58678,7 +58679,6 @@
+                 }
+                 /* detached typed array during the sort: no error */
+             } else {
+-                void *array_ptr = p->u.array.u.ptr;
+                 len = min_int(len, p->u.array.count);
+                 switch(elt_size) {
+                 case 1:

@@ -1,0 +1,35 @@
+schema: 1
+id: 2026-tpctf-web-relaydesk
+title: RelayDesk — Guarded Coding-Agent Workstation
+event: TPCTF
+year: 2026
+category: web
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-D9DC4ED8
+summary: 'RelayDesk puts an on-shift coding agent (OpenCode v2.2.5 on qwen35_9b) to work on an ops workstation
+  over HTTP: you POST maintenance tasks, and you browse the…'
+tags:
+- prompt-injection
+- waf-bypass
+fingerprints:
+- 任务文本不含 AGENTS.md、secret、flag、system prompt 等词；
+- agent 回复中不出现秘密；
+attachments:
+- path: attachments/AUTHORED-D9DC4ED8.zip
+  sha256: a949ac22fe9e5265b544b1491074404bba3a13285db9e3c639e529245da721a5
+  size: 249
+- path: attachments/zip/README.txt
+  size: 155
+  sha256: 2e0c6335791867acf875d6d6e8d6b89c48c9a53a4180fb4db5d0c31c3c805a6a
+scripts:
+- solve/task.py
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: true
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 21 节；附件与脚本来自比赛工作目录

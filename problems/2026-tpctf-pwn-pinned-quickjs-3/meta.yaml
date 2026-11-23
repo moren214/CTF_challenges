@@ -1,0 +1,40 @@
+schema: 1
+id: 2026-tpctf-pwn-pinned-quickjs-3
+title: Pinned QuickJS III
+event: TPCTF
+year: 2026
+category: pwn
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-E85242F2
+summary: 'Same service, lifecycle-flavoured patch: the typed-array sort path caches the backing-store
+  pointer across a user comparator call.'
+tags:
+- js-engine
+- sandbox-escape
+fingerprints:
+- 服务：TCP JSON-Lines，{"code":"<javascript>"}\n 请求，单行 JSON 响应；每条连接一个 fresh worker。
+- 目标：从 worker 环境读取 QJS_CTF_FLAG。
+- JSString 的 len 在 +0x00，union u（字符数据）在 +0x0c，sizeof(JSString) = 0x10；
+attachments:
+- path: attachments/AUTHORED-E85242F2.zip
+  sha256: 4251f6493523be38d11c06b647915970029af0a25d50ebb97d534181f1861e0a
+  size: 1585316
+- path: attachments/zip/patch.diff
+  size: 1204
+  sha256: 77f6b60dbd0c1de240f5bc35aa84a9d732d61a6ed687c98a6dfebdc9740e1c6d
+- path: attachments/zip/README.md
+  size: 858
+  sha256: 15d1be37b64cd167fe0f9be23656c35515a79cd964784c9e9921fe91d0a2c8a8
+scripts:
+- solve/exploit3.py
+- solve/client3.py
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: true
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 26 节；附件与脚本来自比赛工作目录

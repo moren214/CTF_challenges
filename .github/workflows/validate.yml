@@ -1,0 +1,27 @@
+name: validate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  kb:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install deps
+        run: python -m pip install --upgrade pip pyyaml
+      - name: Rebuild index
+        run: python tools/kb.py index
+      - name: Index must be committed
+        run: |
+          if ! git diff --quiet -- index/problems.jsonl; then
+            echo "::error::index/problems.jsonl 过期，本地运行 python tools/kb.py index 后提交"
+            git diff -- index/problems.jsonl
+            exit 1
+          fi
+      - name: Validate metadata
+        run: python tools/kb.py validate

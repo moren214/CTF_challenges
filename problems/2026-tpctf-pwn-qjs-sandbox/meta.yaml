@@ -1,0 +1,39 @@
+schema: 1
+id: 2026-tpctf-pwn-qjs-sandbox
+title: QJS Sandbox — expression service
+event: TPCTF
+year: 2026
+category: pwn
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-4230E93C
+summary: A hardened JavaScript expression service evaluates untrusted source in a pinned QuickJS runtime
+  and returns the JSON result.
+tags:
+- js-engine
+- sandbox-escape
+fingerprints:
+- 附件：AUTHORED-4230E93C.zip、README.txt、patch.diff
+- 考点：js-engine、sandbox-escape
+attachments:
+- path: attachments/AUTHORED-4230E93C.zip
+  sha256: 5d9f439043b316efc7a4ddff9a78f072d3e198a0fed72d7288c220c442d2a349
+  size: 817817
+- path: attachments/zip/README.txt
+  size: 187
+  sha256: a06a3ef9324756e073844a02cea38c48765888f1198371aa45a97febee2ff031
+- path: attachments/zip/patch.diff
+  size: 1545
+  sha256: 66c7c74629a802426d1d2ee747ee798b0b5082afa96f71bb63ff2b7a75ab1029
+scripts:
+- solve/exploit.py
+- solve/client.py
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: true
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 30 节；附件与脚本来自比赛工作目录

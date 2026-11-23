@@ -1,0 +1,43 @@
+schema: 1
+id: 2026-tpctf-web-upwatch
+title: UpWatch — 上传看板
+event: TPCTF
+year: 2026
+category: web
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-4B9564B9
+summary: UpWatch 是一块极简的文件上传看板：提交一个文件和一句话说明， 看板负责接收、编号、留档和回放。
+tags:
+- php2shell
+- path-traversal
+fingerprints:
+- CVE-2026-109618：OOM 破坏（allocator 里 longjmp 跳过清理，EG() 全局状态残留）
+- CVE-2026-109619：跨请求 stale global state（use-after-free），mod_php 下危害最大
+- PHP_SESSION_UPLOAD_PROGRESS + 一个文件字段 + 一个 12 MiB 的字段
+attachments:
+- path: attachments/src/README.md
+  size: 507
+  sha256: 8482b6cdd7b6c0700b2c3632ec69d4bf9e33951444c422a10f6aa71de14a7674
+- path: attachments/src/index.php
+  size: 1980
+  sha256: a126c5c97a0fba29452475f49c0b527f2dd39ddf3421e88dc1bc14d2e7494bcb
+- path: attachments/src/upload.php
+  size: 1511
+  sha256: ef57dcef872a43882bae0de9730d4d0c56e4829304d1b98a077caf2ff240dc30
+- path: attachments/src/view.php
+  size: 547
+  sha256: 13587ab076e4065bf50822933558b27b0d20083006df05b7bd962629b151e0ee
+- path: attachments/src/healthz.php
+  size: 19
+  sha256: e3f7f317cb3bb0ccf6ef3254c2dbbfe67eb77318518642fd415e101edcb73339
+scripts: []
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: true
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 5 节；附件与脚本来自比赛工作目录

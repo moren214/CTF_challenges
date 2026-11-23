@@ -1,0 +1,53 @@
+schema: 1
+id: 2026-tpctf-web-worker-ledger
+title: Worker Ledger
+event: TPCTF
+year: 2026
+category: web
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-E1D577B9
+summary: The ledger has two long-lived workers.
+tags:
+- php2shell
+- php-trick
+fingerprints:
+- memory_limit=8M → 一次 12 MB 的表单字段就能在解析途中触发 OOM（分配 2098791 字节失败），请求在非正常时机结束，留下跨请求的陈旧状态；
+- fatal_error_backtraces=On（PHP 8.5 新增）→ 致命错误时构造 backtrace，把请求内分配的对象引用挂到跨请求存活的全局上（CVE-2026-1
+- session.use_strict_mode=0 → 可以自己指定任意 PHPSESSID，不需要服务端先创建。
+attachments:
+- path: attachments/AUTHORED-E1D577B9.zip
+  sha256: d162b5f17396a77057209400bc665041a160607120bcd71b8b7631b0363f2a0c
+  size: 2099
+- path: attachments/zip/service.Dockerfile
+  size: 274
+  sha256: a44d4d3a717644587f1ae6ec4ec09c466b6ac0e22a0e9d8805a68d761d9373b0
+- path: attachments/zip/README.txt
+  size: 173
+  sha256: ecf667f4f3f808f345b7b79d29777a9a5fd4a5b96cc705ebf46409303c1a3197
+- path: attachments/zip/worker.php
+  size: 105
+  sha256: 62d2adfb1bff306434a9974ef3702895b9a2618c5c6f169886e4f05b899f1688
+- path: attachments/zip/configuration.txt
+  size: 147
+  sha256: c719a868488785b5065dbfbe2f218ef0ebf3bba01181f77939acacc900648b6c
+- path: attachments/zip/php.ini
+  size: 539
+  sha256: b72dfdd4eb73954865d7049e3b4c0666956d7d1445d6285b949f21248722efd4
+- path: attachments/zip/index.php
+  size: 549
+  sha256: e4b7ac5566f54a5b0ed82bd8482c312b6591b718640d9d2db63cbee79e6cb96d
+- path: attachments/zip/apache.conf
+  size: 354
+  sha256: 2d32d0133c646683eca5de2b6a00bf363b2f1b010da523b90c1247250520c2a9
+scripts:
+- solve/wl_solve2.py
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: true
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 3 节；附件与脚本来自比赛工作目录

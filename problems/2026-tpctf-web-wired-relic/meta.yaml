@@ -1,0 +1,68 @@
+schema: 1
+id: 2026-tpctf-web-wired-relic
+title: wired-relic
+event: TPCTF
+year: 2026
+category: web
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-05510392
+summary: An abandoned courier relay is still humming on a decommissioned host.
+tags:
+- php2shell
+- path-traversal
+fingerprints:
+- 先发一个 6MB 的 big 字段请求把 memory_limit=16M 打爆，触发 OOM bailout；
+- bailout 过程中 $_SESSION 的 PS(id) 变成悬垂指针，下一个请求里被 url_encode/Set-Cookie 序列化时发生越界读；
+- '响应里的 Set-Cookie: PHPSESSID=<二进制> 中出现大量堆指针，按 2MB 对齐取众数（≥8 次命中）即 chunk base。'
+attachments:
+- path: attachments/AUTHORED-05510392.zip
+  sha256: f841bc4a71401411ce2f3b23be69b60dd4c7dce39f92b0a8e594154c43ce5781
+  size: 6306
+- path: attachments/zip/README.txt
+  size: 802
+  sha256: 335c3fbc606e2bc95a5fc4e34ba710bdbc5c667be3f72f8feba67373d8632efb
+- path: attachments/zip/source/entrypoint.sh
+  size: 702
+  sha256: f789b18f5d3eb2be47aafbfd3ad35b0d52d42f27f1a959bb84a3064c0b339032
+- path: attachments/zip/source/Dockerfile
+  size: 722
+  sha256: 0860c42cf081e19801e41682c133f9e4f11edb041433f436f18ae232ea15eb71
+- path: attachments/zip/source/php/zz-relic.ini
+  size: 329
+  sha256: bc82e642bcf9c8608600469a6e05d52edee831a952ea080f3ee14aeb1e79c5ff
+- path: attachments/zip/source/relic-lib/lib.php
+  size: 2395
+  sha256: 5d586fb522feaa16bf3297cc97c81ed3ea410d8a7d885c4430aa3fac87d3c022
+- path: attachments/zip/source/apache/zz-relic.conf
+  size: 63
+  sha256: a2032b250d1cbe7dfb1fc4e184b9a7f2fd14199ad7c0ea1fb3581474e0b97fd3
+- path: attachments/zip/source/apache/mpm_prefork.conf
+  size: 382
+  sha256: 2bf66a998cfb200f081f1fbea1d8dca9f8895858961ae4eb77a82afd4f4f7762
+- path: attachments/zip/source/html/healthz.php
+  size: 68
+  sha256: 6ac0d2588d38e12ca64e74949b2e6ef39aa83f7e99974361106e9278e371281d
+- path: attachments/zip/source/html/index.php
+  size: 676
+  sha256: c0e7dab709de5e126c8c7c24c536c368234aeb827dbb0796adf3ccb09ae47807
+- path: attachments/zip/source/html/console/index.php
+  size: 3011
+  sha256: fe215f1cb6f2ba4d8260d81a8b6a51e29fbe2c7d50510b5e5919b96b01a85669
+- path: attachments/zip/source/html/bay/index.php
+  size: 26
+  sha256: e53d659d29dafd95ac7da1245761d23661abdb1e22d96b2f559a76849cd28fcc
+- path: attachments/zip/source/html/deposit/index.php
+  size: 1810
+  sha256: 59a7796a4ea316e7c16a01b74d42763546f20e23efc2d2212a343fb5e63aacee
+scripts:
+- solve/WP.md
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: true
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 4 节；附件与脚本来自比赛工作目录

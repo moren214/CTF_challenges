@@ -1,0 +1,26 @@
+schema: 1
+id: 2026-tpctf-web-shared-coding-console
+title: 共享编码助手控制台
+event: TPCTF
+year: 2026
+category: web
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-12FACCE4
+summary: 一个团队共享的编码助手控制台：租户可以查看工作区会话、运行日志与内部依赖状态， 并通过控制台提供的运维入口检查编码助手运行时。
+tags:
+- prompt-injection
+fingerprints:
+- 考点：prompt-injection
+- 一个团队共享的编码助手控制台：租户可以查看工作区会话、运行日志与内部依赖状态， 并通过控制台提供的运维入口检查编码助手运行时。
+attachments: []
+scripts: []
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: false
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 19 节；附件与脚本来自比赛工作目录

@@ -1,0 +1,11 @@
+--- a/third_party/quickjs/src/quickjs.c
++++ b/third_party/quickjs/src/quickjs.c
+@@ -57746,8 +57746,6 @@
+     if (typed_array_is_oob(p))
+         return JS_ThrowTypeErrorArrayBufferOOB(ctx);
+ 
+-    // RAB may have been resized by evil .valueOf method
+-    final = min_int(final, p->u.array.count);
+     shift = typed_array_size_log2(p->class_id);
+     switch(shift) {
+     case 0:

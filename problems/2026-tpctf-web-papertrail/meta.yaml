@@ -1,0 +1,38 @@
+schema: 1
+id: 2026-tpctf-web-papertrail
+title: PaperTrail — submission desk
+event: TPCTF
+year: 2026
+category: web
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-742BAC37
+summary: PaperTrail is a small internal "paper review desk" served by the stock PHP 8.5.11 Apache image.
+tags:
+- php2shell
+- file-upload
+fingerprints:
+- 'Content-Type: multipart/form-data; boundary=SSSSSSSSSSSSSSSSS（17 个 S）'
+- boundary=BBBBBBBBBB（10 个 B）
+- 字段名 PHPSESSID 只是普通字段，不会驱动 upload progress；
+attachments:
+- path: attachments/src/index.php
+  size: 1313
+  sha256: b09ab761aae9fcda0befbe5a8f10c2cf2a0c6cc3288fc689a6b27fddd314ce27
+- path: attachments/src/status.php
+  size: 1138
+  sha256: b24d198fac2f4b9adc73eae735cc45c0555ae124839e53dd7c20e17b4f615031
+- path: attachments/src/submit.php
+  size: 1391
+  sha256: e23c761e3fd96e01b5293aef8d1bc7d1f76dbc01cee1987660fdcbc0c4b72e3c
+scripts:
+- solve/exploit_pt.py
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: true
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 7 节；附件与脚本来自比赛工作目录

@@ -1,0 +1,62 @@
+schema: 1
+id: 2026-tpctf-web-memtrace
+title: MemTrace 加固版内存观测台
+event: TPCTF
+year: 2026
+category: web
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-ED4AE5F9
+summary: MemTrace 是蓝队上线的一台 PHP 请求生命周期观测台：首页实时展示 当前 worker 进程状态，/info.php 公开运行参数与加固基线，供运维 每天巡检。
+tags:
+- php2shell
+- waf-bypass
+fingerprints:
+- memtrace.conf：DocumentRoot /v，RewriteCond 命中以下请求直接 403：
+- 'Cookie: PHPSESSID=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa（32 个 a）'
+- 扫描 172.16.164.0/24 与目标全端口 1–10000：只有 80 开放，Apache 后端不可直连
+attachments:
+- path: attachments/AUTHORED-ED4AE5F9.zip
+  sha256: 56d5b33252aec60254bf75e1d491f7ef766a9709decc6ddf89ebee6ace939aaa
+  size: 6983
+- path: attachments/zip/README.txt
+  size: 765
+  sha256: 2f5a688288c37dd2119290a2cdacaead1ad77cd510342981b622d17b57cb42a6
+- path: attachments/zip/src/Dockerfile
+  size: 318
+  sha256: bde544c3524b8053d6006c219a4a376a82312946a81e17bada44dcefbe5e3df5
+- path: attachments/zip/src/conf/hardening.ini
+  size: 602
+  sha256: 256de7435cfaedc8b151b2c1063e50d42df1000b2afd7bd524c6a0f4900930b9
+- path: attachments/zip/src/conf/prefork.conf
+  size: 172
+  sha256: b8ac9af24e824ec905cd5a1b9ca2d43e433290265e66625df7f4d45dd4b5decc
+- path: attachments/zip/src/site/memtrace.conf
+  size: 1023
+  sha256: 432b84892ff7222fa69207b56f4581e4f257c7471036639f8f29bf8484d9a954
+- path: attachments/zip/src/gateway/Dockerfile
+  size: 97
+  sha256: b5243edbce15026485fc5f1611178ff323ee43e26eaa5412a768958d8767bfd4
+- path: attachments/zip/src/gateway/gw.py
+  size: 5042
+  sha256: 347cc59bb9cc39c1abeee73537166cfef21a658e8942a40b952b318399f360d4
+- path: attachments/zip/src/public/info.php
+  size: 1480
+  sha256: 1791682b58115dfad85466106ef0b9d5a12429a59ef655a84b8a9bd66109ba80
+- path: attachments/zip/src/public/healthz.php
+  size: 53
+  sha256: 413028219766e2ff3338998f0bb88cdea55cf31007ad9dc1fdee76008291ebe3
+- path: attachments/zip/src/public/index.php
+  size: 1806
+  sha256: 341dee23f8afc550376dfc1a07712cc19e60fd6d97fa95e1a19977c50745b92e
+scripts:
+- solve/wp.md
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: true
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 11 节；附件与脚本来自比赛工作目录

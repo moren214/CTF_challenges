@@ -1,0 +1,39 @@
+--- pristine-qjs/quickjs.c	2026-06-04 08:26:08.000000000 -0400
++++ pkg2/qjs-stack/services/chal/third_party/quickjs/src/quickjs.c	2026-11-21 03:22:36.375225223 -0500
+@@ -56521,6 +56521,7 @@
+     JSValue obj;
+     JSArrayBuffer *abuf = NULL;
+     uint64_t sab_alloc_len;
++    BOOL stack_backed = FALSE;
+ 
+     if (!alloc_flag && buf && max_len && free_func != js_array_buffer_free) {
+         // not observable from JS land, only through C API misuse;
+@@ -56559,9 +56560,16 @@
+             memset(abuf->data, 0, sab_alloc_len);
+         } else {
+             /* the allocation must be done after the object creation */
+-            abuf->data = js_mallocz(ctx, max_int(len, 1));
+-            if (!abuf->data)
+-                goto fail;
++            if (buf == NULL) {
++                /* scratch buffer used while the object is still being built */
++                uint8_t scratch[32];
++                abuf->data = scratch;
++                stack_backed = TRUE;
++            } else {
++                abuf->data = js_mallocz(ctx, max_int(len, 1));
++                if (!abuf->data)
++                    goto fail;
++            }
+         }
+     } else {
+         if (class_id == JS_CLASS_SHARED_ARRAY_BUFFER &&
+@@ -56574,7 +56582,7 @@
+     abuf->detached = FALSE;
+     abuf->shared = (class_id == JS_CLASS_SHARED_ARRAY_BUFFER);
+     abuf->opaque = opaque;
+-    abuf->free_func = free_func;
++    abuf->free_func = stack_backed ? NULL : free_func;
+     if (alloc_flag && buf)
+         memcpy(abuf->data, buf, len);
+     JS_SetOpaque(obj, abuf);

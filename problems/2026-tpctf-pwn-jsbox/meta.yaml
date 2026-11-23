@@ -1,0 +1,34 @@
+schema: 1
+id: 2026-tpctf-pwn-jsbox
+title: jsbox — QuickJS 引擎内存迷宫
+event: TPCTF
+year: 2026
+category: pwn
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-17824DAD
+summary: 一个只懂 JavaScript 的小盒子：通过 TCP 发来一段 JS 源码，它返回 JSON 结构化的求值结果；同一连接内运行时状态会保留。
+tags:
+- js-engine
+- sandbox-escape
+fingerprints:
+- 服务：QuickJS 2026-06-04 求值盒子，TCP 单行 JSON {"code":"<JS>"}。
+- 同一连接内 globalThis 持久；源码上限 64 KiB；单次求值默认 2 秒。
+- JSObject 请求 align8(64)+8 = 72，块类 block_size=72，每 arena n_blocks = (4096-40)/72 = 56。
+attachments:
+- path: attachments/src/quickjs-base-bundle.tar.gz
+  size: 1583656
+  sha256: a69e0f7f77c5714909c36e661861e1c685ec135ec9063a5b1dd3943449aa8d7c
+- path: attachments/src/patch.diff
+  size: 564
+  sha256: f26e956fb62c0eb09c09e978ca2019356e716359d7434fbdaecb20ae4eb5c5cd
+scripts: []
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: true
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 29 节；附件与脚本来自比赛工作目录

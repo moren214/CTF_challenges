@@ -1,0 +1,16 @@
+--- a/third_party/quickjs/src/quickjs.c
++++ b/third_party/quickjs/src/quickjs.c
+@@ -56824,10 +56824,9 @@
+                     p->u.array.u.ptr = &data[ta->offset];
+                 }
+             } else {
+-                if (len >= (int64_t)ta->offset + ta->length) {
+-                    p->u.array.count = ta->length >> size_log2;
+-                    p->u.array.u.ptr = &data[ta->offset];
+-                }
++                /* a fixed-length view keeps its construction length */
++                p->u.array.count = ta->length >> size_log2;
++                p->u.array.u.ptr = &data[ta->offset];
+             }
+         }
+     }

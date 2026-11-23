@@ -1,0 +1,2 @@
+Source disclosure: the included php.ini and apache.conf are copied from the
+service image. The answer is created only when a team instance starts.

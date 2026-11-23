@@ -1,0 +1,36 @@
+schema: 1
+id: 2026-tpctf-pwn-aevaljs
+title: AevalJS — 常驻内存脚本求值服务
+event: TPCTF
+year: 2026
+category: pwn
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-0C9A1A59
+summary: AevalJS 是一个长驻内存的 JavaScript 求值服务：一条 TCP 连接独占一个 持久运行时，逐行提交源码，取回 JSON 结果。
+tags:
+- js-engine
+- sandbox-escape
+fingerprints:
+- 第一处检查用的是缩容前的 vlen，pos+size <= 0x1F000 通过；
+- 而 abuf->data 仍是原 0x1F000 字节块（realloc 收缩后原块被 free），于是 ptr = data + pos 对已释放的旧后备存储做 OOB 读写。
+- L1 读 data+0x18 自校准，返回写 s.len 的位置（0x20 或 0x1010）；
+attachments:
+- path: attachments/src/quickjs-base-bundle.tar.gz
+  size: 1583656
+  sha256: a69e0f7f77c5714909c36e661861e1c685ec135ec9063a5b1dd3943449aa8d7c
+- path: attachments/src/patch.diff
+  size: 2266
+  sha256: 02a09a9a5c3c87000c79dfba6ee494bac31bdfc9f29677d0e812c1880a89bace
+scripts:
+- solve/remote.py
+- solve/exploit.js
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: true
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 27 节；附件与脚本来自比赛工作目录

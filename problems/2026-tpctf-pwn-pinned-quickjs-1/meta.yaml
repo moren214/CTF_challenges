@@ -1,0 +1,39 @@
+schema: 1
+id: 2026-tpctf-pwn-pinned-quickjs-1
+title: Pinned QuickJS I
+event: TPCTF
+year: 2026
+category: pwn
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-F02C6EA9
+summary: The service runs a pinned QuickJS build behind a JSON-Lines TCP interface and keeps this instance's
+  flag in the worker environment.
+tags:
+- js-engine
+- sandbox-escape
+fingerprints:
+- 服务：TCP JSON-Lines，每次发送一行 {"code":"<javascript>"}，返回一行 {"ok":true,"result":...} 或 {"ok":fal
+- 目标：从 worker 进程环境中取回 QJS_CTF_FLAG，按原样提交。
+attachments:
+- path: attachments/AUTHORED-F02C6EA9.zip
+  sha256: 825d8f7cff60ba0b38ad5cdd74927db4a28a54fba72a7ac967cc149f226cf3a9
+  size: 1585043
+- path: attachments/zip/patch.diff
+  size: 513
+  sha256: 43160317f8320d908e721a0a474a1cd4ab3019e88ddaff1db26e67e5e9392cd9
+- path: attachments/zip/README.md
+  size: 856
+  sha256: 392e55a23740ab47d9d4f6c9286c0cf31744ba8d8a0e780dbab99c98f461dc3e
+scripts:
+- solve/solve.py
+- solve/exploit.js
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: true
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 24 节；附件与脚本来自比赛工作目录

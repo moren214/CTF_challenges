@@ -1,0 +1,12 @@
+diff -ru a/third_party/quickjs/src/quickjs.c b/third_party/quickjs/src/quickjs.c
+--- a/third_party/quickjs/src/quickjs.c	1970-01-01 08:00:00.000000000 +0800
++++ b/third_party/quickjs/src/quickjs.c	2026-11-21 15:17:00.576809708 +0800
+@@ -57672,7 +57672,7 @@
+         return JS_ThrowTypeErrorArrayBufferOOB(ctx);
+ 
+     // RAB may have been resized by evil .valueOf method
+-    space = p->u.array.count - max_int(to, from);
++    space = len - max_int(to, from);
+     count = min_int(final - from, len - to);
+     count = min_int(count, space);
+     if (count > 0) {

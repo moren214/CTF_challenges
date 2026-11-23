@@ -1,0 +1,38 @@
+schema: 1
+id: 2026-tpctf-pwn-pinned-quickjs-2
+title: Pinned QuickJS II
+event: TPCTF
+year: 2026
+category: pwn
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-93590E02
+summary: Same service, different production patch.
+tags:
+- js-engine
+- sandbox-escape
+fingerprints:
+- 服务：TCP JSON-Lines，{"code":"<javascript>"}\n 请求，单行 JSON 响应；每条连接一个 fresh worker。
+- 目标：从 worker 环境读取 QJS_CTF_FLAG 并提交。
+attachments:
+- path: attachments/AUTHORED-93590E02.zip
+  sha256: 9418638867187402a8cb19be869c16ecf80fbcbbc5ad2c5f1be547963aa8f170
+  size: 1585380
+- path: attachments/zip/patch.diff
+  size: 1752
+  sha256: 9c11b2e07be4c73fede708513a05905907f96b923b3f667395af9611956aad00
+- path: attachments/zip/README.md
+  size: 857
+  sha256: 464fe1815c029fc2aaba5367f23d35409a61de90096a17a5d22700b897081d89
+scripts:
+- solve/solve2.py
+- solve/exploit2.js
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: true
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 25 节；附件与脚本来自比赛工作目录

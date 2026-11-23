@@ -1,0 +1,96 @@
+--- a/third_party/quickjs/src/quickjs.c
++++ b/third_party/quickjs/src/quickjs.c
+@@ -56520,6 +56520,8 @@
+     JSRuntime *rt = ctx->rt;
+     JSValue obj;
+     JSArrayBuffer *abuf = NULL;
++    uint8_t *new_data = NULL;
++    BOOL new_data_owned = FALSE;
+     uint64_t sab_alloc_len;
+ 
+     if (!alloc_flag && buf && max_len && free_func != js_array_buffer_free) {
+@@ -56541,35 +56543,39 @@
+         JS_ThrowRangeError(ctx, "invalid max array buffer length");
+         goto fail;
+     }
+-    abuf = js_malloc(ctx, sizeof(*abuf));
+-    if (!abuf)
+-        goto fail;
+-    abuf->byte_length = len;
+-    abuf->max_byte_length = max_len ? *max_len : -1;
+     if (alloc_flag) {
+         if (class_id == JS_CLASS_SHARED_ARRAY_BUFFER &&
+             rt->sab_funcs.sab_alloc) {
+             // TOOD(bnoordhuis) resizing backing memory for SABs atomically
+             // is hard so we cheat and allocate |maxByteLength| bytes upfront
+             sab_alloc_len = max_len ? *max_len : len;
+-            abuf->data = rt->sab_funcs.sab_alloc(rt->sab_funcs.sab_opaque,
+-                                                 max_int(sab_alloc_len, 1));
+-            if (!abuf->data)
++            new_data = rt->sab_funcs.sab_alloc(rt->sab_funcs.sab_opaque,
++                                               max_int(sab_alloc_len, 1));
++            if (!new_data)
+                 goto fail;
+-            memset(abuf->data, 0, sab_alloc_len);
++            memset(new_data, 0, sab_alloc_len);
++            new_data_owned = TRUE;
+         } else {
+-            /* the allocation must be done after the object creation */
+-            abuf->data = js_mallocz(ctx, max_int(len, 1));
+-            if (!abuf->data)
++            /* the backing store is allocated before the descriptor so the
++               two allocations stay independent of each other */
++            new_data = js_mallocz(ctx, max_int(len, 1));
++            if (!new_data)
+                 goto fail;
++            new_data_owned = TRUE;
+         }
+     } else {
+         if (class_id == JS_CLASS_SHARED_ARRAY_BUFFER &&
+             rt->sab_funcs.sab_dup) {
+             rt->sab_funcs.sab_dup(rt->sab_funcs.sab_opaque, buf);
+         }
+-        abuf->data = buf;
++        new_data = buf;
+     }
++    abuf = js_malloc(ctx, sizeof(*abuf));
++    if (!abuf)
++        goto fail;
++    abuf->data = new_data;
++    abuf->byte_length = len;
++    abuf->max_byte_length = max_len ? *max_len : -1;
+     init_list_head(&abuf->array_list);
+     abuf->detached = FALSE;
+     abuf->shared = (class_id == JS_CLASS_SHARED_ARRAY_BUFFER);
+@@ -56581,7 +56587,16 @@
+     return obj;
+  fail:
+     JS_FreeValue(ctx, obj);
+-    js_free(ctx, abuf);
++    if (abuf) {
++        js_free(ctx, abuf);
++    } else if (new_data_owned) {
++        if (class_id == JS_CLASS_SHARED_ARRAY_BUFFER &&
++            rt->sab_funcs.sab_free) {
++            rt->sab_funcs.sab_free(rt->sab_funcs.sab_opaque, new_data);
++        } else {
++            js_free(ctx, new_data);
++        }
++    }
+     return JS_EXCEPTION;
+ }
+ 
+@@ -56814,11 +56829,11 @@
+                     ta->length = 0;
+             }
+         } else {
+-            p->u.array.count = 0;
+-            p->u.array.u.ptr = NULL;
+             size_log2 = typed_array_size_log2(p->class_id);
+             size_elem = 1 << size_log2;
+             if (ta->track_rab) {
++                p->u.array.count = 0;
++                p->u.array.u.ptr = NULL;
+                 if (len >= (int64_t)ta->offset + size_elem) {
+                     p->u.array.count = (len - ta->offset) >> size_log2;
+                     p->u.array.u.ptr = &data[ta->offset];

@@ -1,0 +1,59 @@
+schema: 1
+id: 2026-tpctf-web-deck-of-relics
+title: Deck of Relics
+event: TPCTF
+year: 2026
+category: web
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-C7823C52
+summary: A small museum catalog served by a house of eight attendants.
+tags:
+- php2shell
+- file-upload
+fingerprints:
+- 镜像基于 PHP 8.5.11（2026 年的 pre-auth RCE 出事版本）；
+- 带文件上传的 multipart 请求会让 SAPI 在 脚本 RINIT 之前触发 MULTIPART_EVENT_START，由 Session 模块执行 php_rinit_
+- 下一次请求（同一 child！）如果再次触发 session 初始化，会复用这个陈旧状态， 于是：
+attachments:
+- path: attachments/AUTHORED-C7823C52.zip
+  sha256: 8dae175f8669a190e16a30cd117207a77d7b8a7424bbbdf24eab5e0599d237fb
+  size: 4640
+- path: attachments/zip/README.txt
+  size: 383
+  sha256: 55b5b18d752a943b7a60355c27766d44f60b6e2a60a406aa2711d81c542abe0b
+- path: attachments/zip/docker-compose.yml
+  size: 993
+  sha256: c203c011c0ff6512c10ac54ee6a861c686bdeaf852fbd8dbc383515e3a703633
+- path: attachments/zip/Dockerfile
+  size: 679
+  sha256: 200e60d62d079021970f8fd186fe3ae007fda02d584f771fc8ffe80624299430
+- path: attachments/zip/php/zz-app.ini
+  size: 563
+  sha256: 8b7dca29f2033b0589814be69b8c10636d6491dcf7287a22621c3733d5d0e257
+- path: attachments/zip/apache/mpm_prefork.conf
+  size: 424
+  sha256: 8474ee8fac52132a752571fedd54c6531477aac04165864d93f628ff1ce0e86f
+- path: attachments/zip/public/relic.php
+  size: 1741
+  sha256: c3b6a9447b2325b541bf84497b30996986fc16e62e8d795b028d558b34c6ba08
+- path: attachments/zip/public/healthz.php
+  size: 53
+  sha256: 413028219766e2ff3338998f0bb88cdea55cf31007ad9dc1fdee76008291ebe3
+- path: attachments/zip/public/status.php
+  size: 410
+  sha256: ddba5185daa6b5da71c60852aec32d93ae48aec5d0a924e357529fe386d11999
+- path: attachments/zip/public/index.php
+  size: 1283
+  sha256: 2dd91f5c6bf9c0f8b681d8101e9eb4a55e36ae0ca75ad77d3d0af32c9cd763df
+scripts:
+- solve/WRITEUP.md
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: true
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 10 节；附件与脚本来自比赛工作目录

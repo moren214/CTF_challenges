@@ -1,0 +1,28 @@
+schema: 1
+id: 2026-tpctf-web-opencode-copilot
+title: opencode_copilot
+event: TPCTF
+year: 2026
+category: web
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-277D5BF6
+summary: 基于 OpenCode 风格 Coding Agent 的内部项目维护工作台。
+tags:
+- prompt-injection
+- path-traversal
+fingerprints:
+- read <path>：提取路径并调用 read；多路径时最多 3 个。路径会规范化，.. 穿越会被拒绝。
+- grep <pattern> <path>：只有当 pattern 用双引号包起来时才原样传给工具；否则 pattern 被强制成 .。
+- 'glob：参数固定为 {"pattern": "**/*", "path": "."}，始终返回 (无匹配文件)，是 no-op。'
+attachments: []
+scripts: []
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: false
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 17 节；附件与脚本来自比赛工作目录

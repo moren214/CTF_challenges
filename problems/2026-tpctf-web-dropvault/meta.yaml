@@ -1,0 +1,60 @@
+schema: 1
+id: 2026-tpctf-web-dropvault
+title: DropVault
+event: TPCTF
+year: 2026
+category: web
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-542071C7
+summary: 'DropVault is a small internal file-drop service running on the stock PHP-on-Apache image: a
+  multipart drop endpoint, an ops status board and a deliberately…'
+tags:
+- php2shell
+- file-upload
+fingerprints:
+- Dockerfile：FROM php:8.5.11-apache，copy 源码到 /var/www/html， ln -s /answers/flag /flag。
+- mpm_prefork.conf：StartServers=MaxRequestWorkers=ServerLimit=1、KeepAlive Off —— 单个长命 worker
+- longjmp 绕过 php_request_shutdown() 的模块 RSHUTDOWN，
+attachments:
+- path: attachments/AUTHORED-542071C7.zip
+  sha256: 65554b8b42c846ba2910860d7783ac1dc135a3b06937aa8e5ac507a134847082
+  size: 5582
+- path: attachments/zip/README.md
+  size: 1111
+  sha256: ac627d1b808a99394f7fa9f4fcb4c27fc4bb3ef5b0c9c8f936f6aaf0bee847d9
+- path: attachments/zip/deploy/docker-compose.yml
+  size: 325
+  sha256: b28ba38637cd0a318a7def1846615c815bcb88c4cdcf9e430903e8ac458185f3
+- path: attachments/zip/deploy/php-dropvault.ini
+  size: 683
+  sha256: 1f17565df10c589a2745e39ea88ce865f05033e734b51608dff180f6277aed5d
+- path: attachments/zip/deploy/mpm_prefork.conf
+  size: 320
+  sha256: 9b7f1961a9098f9d91fb4e721940803b69c85279c1668314ed85210d1af61f6a
+- path: attachments/zip/deploy/Dockerfile
+  size: 270
+  sha256: 3c16d27e1358b37de2060b2e9e49891b436d0d7454750346db60cf243ea57e31
+- path: attachments/zip/src/upload.php
+  size: 2989
+  sha256: a01e2c9c9884261c27096fddd635738576257f9506a3e844c82063ddab252964
+- path: attachments/zip/src/healthz.php
+  size: 53
+  sha256: 413028219766e2ff3338998f0bb88cdea55cf31007ad9dc1fdee76008291ebe3
+- path: attachments/zip/src/status.php
+  size: 1890
+  sha256: 0721232577d924b90c62701d9b5b4c4b3da14cef7f8e1cf3383430a55e48a36e
+- path: attachments/zip/src/index.php
+  size: 1480
+  sha256: f25f7575ad222e8c3690a590f5dba569fb27d35fc378318f5ee62f446f749b64
+scripts:
+- solve/_wp_dropvault.md
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: true
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 9 节；附件与脚本来自比赛工作目录

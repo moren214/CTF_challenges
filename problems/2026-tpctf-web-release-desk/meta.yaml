@@ -1,0 +1,26 @@
+schema: 1
+id: 2026-tpctf-web-release-desk
+title: release-desk
+event: TPCTF
+year: 2026
+category: web
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-07DC6EA8
+summary: Release Desk runs autonomous release summaries for the orbital-web project.
+tags:
+- prompt-injection
+fingerprints:
+- 其他绝对路径被当作 deployment 提供的只读 artifact mount，只检查“是常规文件”，不重新执行 permissions.read 里的 deny 规则。
+- 考点：prompt-injection
+attachments: []
+scripts: []
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: false
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 18 节；附件与脚本来自比赛工作目录

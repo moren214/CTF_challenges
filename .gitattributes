@@ -1,0 +1,12 @@
+# 附件一律按原始字节存取。Windows 上 core.autocrlf=true 会把 LF 转成 CRLF，
+# 导致 meta.yaml 里记录的 sha256/size 与实际文件不符（克隆到别的机器上更严重）。
+problems/*/attachments/** -text
+examples/*/attachments/** -text
+
+# 题解、脚本、配置按文本处理，统一 LF，避免跨平台 diff 噪音
+*.md   text eol=lf
+*.py   text eol=lf
+*.yaml text eol=lf
+*.yml  text eol=lf
+*.json text eol=lf
+*.jsonl text eol=lf

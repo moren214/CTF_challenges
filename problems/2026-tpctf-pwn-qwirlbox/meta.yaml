@@ -1,0 +1,35 @@
+schema: 1
+id: 2026-tpctf-pwn-qwirlbox
+title: QwirlBox — Hardened JavaScript Evaluation Relay
+event: TPCTF
+year: 2026
+category: pwn
+difficulty: hard
+status: solved
+challenge_id: AUTHORED-B4D3046D
+summary: 'QwirlBox is the platform team''s hardened JavaScript evaluation service: a pinned QuickJS 2026-06-04
+  engine behind a strict TCP relay.'
+tags:
+- js-engine
+- sandbox-escape
+fingerprints:
+- 一次 get/set 只做 1/2/4/8 字节一次访问。
+- 但外层 set 的 index/value 转换里可以再调一个 DataView，形成嵌套：
+- idx.valueOf 调 dv.getBigUint64(...)，内层也在 buffer 还满时快照 (L, L)；
+attachments:
+- path: attachments/src/quickjs-base-bundle.tar.gz
+  size: 1583656
+  sha256: a69e0f7f77c5714909c36e661861e1c685ec135ec9063a5b1dd3943449aa8d7c
+- path: attachments/src/patch.diff
+  size: 3625
+  sha256: 878f12db230e251d15c6540ba72ef4341461f15bbbec933e88c270a4362351d1
+scripts: []
+evidence: []
+environment: []
+dead_ends: []
+related: []
+flag_format: FLAG{...}
+attachments_complete: true
+sources:
+- type: self
+  note: 队内 WP《TPCTF 2026 · Final WriteUp》第 35 节；附件与脚本来自比赛工作目录

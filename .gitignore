@@ -1,0 +1,15 @@
+# 私库不入版本控制的内容
+private/
+dist/
+.ctf/
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+Thumbs.db
+
+# 大附件外链清单（体积超限的题目在此登记，公开库只读这份）
+attachments-external.yaml
+
+# 本地浏览页（生成物，随时可重建）
+view/
