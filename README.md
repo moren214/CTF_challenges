@@ -8,6 +8,16 @@
 人是主要读者，AI 是第一检索者——所以每道题除了 `README.md`，还有一份结构化的 `meta.yaml`，
 再汇总成 `index/problems.jsonl`（一行一题）。
 
+## 仓库
+
+| 仓库 | 地址 | 内容 |
+| --- | --- | --- |
+| 公开 | https://github.com/moren214/CTF_challenges | `dist/public` 的脱敏副本：flag 已替换为 `{{FLAG}}`，凭据与本机路径已剔除 |
+| 私有 | https://github.com/moren214/CTF_challenges_private | 全量，含 solve 脚本与未脱敏细节 |
+
+公开仓由 `python tools\sanitize_public.py --out dist/public --force` 生成，
+在 `dist/public` 里单独提交推送；**不要**直接改公开仓里的文件，下次生成会覆盖。
+
 ## 目录
 
 ```
